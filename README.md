@@ -46,6 +46,8 @@ npm run seed:demo
 
 ## Environment variables
 
+**For now**, keep credentials and account scope in **`.env.local`** (see [`.env.example`](./.env.example)). Production on Vercel still needs the same keys in the project dashboard—or run `npm run setup:vercel` to push from `.env.local`.
+
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `DATABASE_URL` | Yes | Neon Postgres (pooled URL on Vercel) |
