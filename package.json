@@ -8,7 +8,8 @@
     "start": "next start -p 43123",
     "lint": "eslint",
     "test": "vitest run",
-    "seed:demo": "tsx scripts/seed-demo-costs.ts"
+    "seed:demo": "tsx scripts/seed-demo-costs.ts",
+    "setup:vercel": "bash scripts/vercel-setup.sh"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",

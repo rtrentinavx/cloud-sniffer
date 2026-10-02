@@ -71,10 +71,27 @@ Never commit `.env.local` or real secrets.
 
 ## Deploy on Vercel
 
-1. Import the repo and connect Neon `DATABASE_URL` (pooled).
-2. Set `VERCEL_ACCESS_TOKEN`, `VERCEL_TEAM_ID` (if team), and `CRON_SECRET`.
-3. Deploy; Vercel Cron runs ingest from `vercel.json`.
-4. Apply schema once: `psql "$DATABASE_URL" -f db/schema.sql` (or Neon SQL Editor).
+### One-time (Vercel CLI on your machine)
+
+1. Apply Neon schema if needed: `psql "$DATABASE_URL" -f db/schema.sql`
+2. In `.env.local` set:
+   - `DATABASE_URL` — Neon **pooled** URL
+   - `VERCEL_ACCESS_TOKEN` — [Account token](https://vercel.com/account/tokens) with access to [FOCUS billing charges](https://vercel.com/docs/rest-api/billing/list-focus-billing-charges) for your team/personal account
+   - `VERCEL_TEAM_ID` — `team_…` if ingesting **team** billing (omit for personal)
+   - `CRON_SECRET` — optional; `scripts/vercel-setup.sh` generates one if missing
+3. Log in and link + deploy:
+
+   ```bash
+   vercel login
+   npm run setup:vercel
+   ```
+
+   This runs `vercel link`, pushes env vars to **production / preview / development**, and `vercel deploy --prod`.
+
+### Manual (dashboard)
+
+1. Import the repo and set the same env vars in **Project → Settings → Environment Variables**.
+2. Deploy; cron is defined in `vercel.json` (`0 6 * * *` → `/api/cron/ingest-vercel`).
 
 ## Repository layout
 
