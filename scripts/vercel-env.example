@@ -1,0 +1,6 @@
+# Copy values into .env.local, then run: ./scripts/vercel-setup.sh
+# DATABASE_URL=postgresql://...  (Neon pooled URL — required)
+# VERCEL_ACCESS_TOKEN=          (https://vercel.com/account/tokens — required for billing ingest)
+# VERCEL_TEAM_ID=               (team_... for team billing; leave empty for personal)
+# CRON_SECRET=                  (optional here; script generates if missing)
+# REQUIRED_TAG_KEYS=team,env,project
