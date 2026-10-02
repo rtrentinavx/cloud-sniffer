@@ -53,3 +53,7 @@ psql "$DATABASE_URL" -v from_date="'2026-01-01'" -v to_date="'2026-02-01'" -f db
 ```
 
 Note: the TypeScript path uses parameterized dates; prefer it from application code on Vercel.
+
+## Grafana read-only access
+
+For [Grafana Cloud](../docs/grafana-cloud-setup.md), run [`grafana_ro.sql`](./grafana_ro.sql) in the Neon SQL Editor (replace the password placeholder first). Grafana uses `grafana_ro`; the Vercel app keeps using its own pooled `DATABASE_URL` user.

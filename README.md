@@ -12,6 +12,7 @@ Multi-cloud cost visibility: ingest FOCUS-aligned billing data, roll up daily sp
 |-------|---------|
 | App | [Vercel](https://vercel.com) — Next.js 15 App Router, cron |
 | Cost lake | [Neon](https://neon.tech) — Postgres (`cost_line_items`, `cost_daily_rollup`, `budgets`) |
+| Dashboards / alerts (optional) | [Grafana Cloud](https://grafana.com/products/cloud/) — same Neon read-only user |
 | Cache / dedup (planned) | [Upstash](https://upstash.com) — Redis |
 
 Billing data is **read** from provider APIs (Vercel first); the app stays on neutral PaaS.
@@ -58,6 +59,16 @@ npm run seed:demo
 | `UPSTASH_*` | Later | Redis for dedup / alerts |
 
 Never commit `.env.local` or real secrets.
+
+## Grafana Cloud
+
+Optional FinOps dashboards and daily alerts against the same Neon rollup tables as this app (does not replace the Next.js UI).
+
+1. Create read-only role: [`db/grafana_ro.sql`](db/grafana_ro.sql) in Neon SQL Editor.
+2. Add a PostgreSQL datasource and import [`grafana/dashboards/cost-overview.json`](grafana/dashboards/cost-overview.json).
+3. Wire alert SQL from [`grafana/alerts/postgres/`](grafana/alerts/postgres/).
+
+Full steps: [`docs/grafana-cloud-setup.md`](docs/grafana-cloud-setup.md).
 
 ## Vercel billing ingest
 
@@ -106,7 +117,13 @@ app/
   api/cron/ingest-vercel/       # Billing ingest + rollup refresh
 db/
   schema.sql
+  grafana_ro.sql                  # Read-only role for Grafana Cloud
   refresh_rollup.sql            # Standalone rollup SQL (see db/README.md)
+docs/
+  grafana-cloud-setup.md          # Grafana Cloud + Neon wiring
+grafana/
+  dashboards/cost-overview.json
+  alerts/postgres/                # Alert rule SQL (Postgres)
 lib/
   db.ts                         # Neon client + rollup refresh
   vercel/                       # FOCUS fetch, map, ingest
