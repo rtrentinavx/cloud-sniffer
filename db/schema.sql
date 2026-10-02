@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS cost_line_items (
   billing_period_start DATE,
   billing_period_end   DATE,
   charge_period_start  TIMESTAMPTZ NOT NULL,
+  charge_period_end    TIMESTAMPTZ,
   provider             TEXT NOT NULL,
   account_id           TEXT NOT NULL,
   sub_account_id       TEXT,
