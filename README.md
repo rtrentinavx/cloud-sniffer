@@ -73,7 +73,7 @@ Full steps: [`docs/grafana-cloud-setup.md`](docs/grafana-cloud-setup.md).
 ## Vercel billing ingest
 
 - **API:** `GET https://api.vercel.com/v1/billing/charges?from=&to=&teamId=` (JSONL, FOCUS v1.3).
-- **Cron route:** `GET /api/cron/ingest-vercel` (also accepts `POST` for manual runs with JSON `{ "from", "to" }` ISO ranges).
+- **Cron route:** `GET /api/cron/ingest-vercel` ingests the **last 3 days** by default (also accepts `POST` with JSON `{ "from", "to" }` ISO ranges for backfill).
 - **Schedule:** `vercel.json` — `0 6 * * *` (06:00 UTC daily).
 - **Flow:** stream charges → upsert `cost_line_items` (`provider='Vercel'`, stable `line_item_id`) → refresh `cost_daily_rollup` for affected dates.
 

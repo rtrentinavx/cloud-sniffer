@@ -1,6 +1,7 @@
 import { refreshCostDailyRollup, sql } from "@/lib/db";
 import { collectVercelBillingCharges } from "./fetch-billing-charges";
 import { mapFocusChargeToLineItem } from "./map-focus-charge";
+import { upsertCostLineItems } from "./upsert-line-items";
 
 export type IngestVercelResult = {
   fetched: number;
@@ -25,7 +26,7 @@ function defaultIngestWindow(): { from: string; to: string } {
     Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1),
   );
   const from = new Date(to);
-  from.setUTCDate(from.getUTCDate() - 32);
+  from.setUTCDate(from.getUTCDate() - 3);
   return { from: from.toISOString(), to: to.toISOString() };
 }
 
@@ -61,65 +62,7 @@ export async function ingestVercelBilling(options?: {
   );
 
   const db = sql();
-  let upserted = 0;
-
-  for (const item of mapped) {
-    await db`
-      INSERT INTO cost_line_items (
-        billing_period_start,
-        billing_period_end,
-        charge_period_start,
-        charge_period_end,
-        provider,
-        account_id,
-        sub_account_id,
-        region,
-        service,
-        sku,
-        resource_id,
-        resource_name,
-        cost_amount,
-        currency,
-        tags,
-        tag_team,
-        tag_env,
-        tag_project,
-        allocation_status,
-        line_item_id
-      ) VALUES (
-        ${item.billing_period_start}::date,
-        ${item.billing_period_end}::date,
-        ${item.charge_period_start}::timestamptz,
-        ${item.charge_period_end}::timestamptz,
-        ${item.provider},
-        ${item.account_id},
-        ${item.sub_account_id},
-        ${item.region},
-        ${item.service},
-        ${item.sku},
-        ${item.resource_id},
-        ${item.resource_name},
-        ${item.cost_amount},
-        ${item.currency},
-        ${JSON.stringify(item.tags)}::jsonb,
-        ${item.tag_team},
-        ${item.tag_env},
-        ${item.tag_project},
-        ${item.allocation_status},
-        ${item.line_item_id}
-      )
-      ON CONFLICT (line_item_id) DO UPDATE SET
-        cost_amount = EXCLUDED.cost_amount,
-        tags = EXCLUDED.tags,
-        tag_team = EXCLUDED.tag_team,
-        tag_env = EXCLUDED.tag_env,
-        tag_project = EXCLUDED.tag_project,
-        allocation_status = EXCLUDED.allocation_status,
-        charge_period_end = EXCLUDED.charge_period_end,
-        ingested_at = now()
-    `;
-    upserted += 1;
-  }
+  const upserted = await upsertCostLineItems(db, mapped);
 
   const usageDates = mapped.map((m) => usageDateFromIso(m.charge_period_start));
   const rollupFrom =
