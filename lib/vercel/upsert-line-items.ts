@@ -29,13 +29,23 @@ function columnsFromItems(items: MappedLineItem[]) {
   };
 }
 
+/** One INSERT cannot contain duplicate line_item_id values (Postgres ON CONFLICT). */
+function dedupeByLineItemId(items: MappedLineItem[]): MappedLineItem[] {
+  const byId = new Map<string, MappedLineItem>();
+  for (const item of items) {
+    byId.set(item.line_item_id, item);
+  }
+  return [...byId.values()];
+}
+
 async function upsertLineItemChunk(
   db: Sql,
   items: MappedLineItem[],
 ): Promise<number> {
-  if (items.length === 0) return 0;
+  const unique = dedupeByLineItemId(items);
+  if (unique.length === 0) return 0;
 
-  const c = columnsFromItems(items);
+  const c = columnsFromItems(unique);
 
   const rows = await db`
     INSERT INTO cost_line_items (
