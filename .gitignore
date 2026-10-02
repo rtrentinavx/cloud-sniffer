@@ -1,41 +1,67 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Environment & secrets (never commit)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+!.env.example
 
-# testing
-/coverage
+# Next.js / Vercel
+.next/
+.vercel/
+out/
+/build/
+dist/
 
-# next.js
-/.next/
-/out/
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
-# production
-/build
+# Testing & coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Logs & debug
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# OS & editors
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
 
-# vercel
-.vercel
+# Turbo / tooling caches
+.turbo/
+.cache/
+.parcel-cache/
+.eslintcache
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Drizzle / Prisma local artifacts (if added later)
+drizzle/meta/_journal.json.bak
+
+# Misc
+*.pem
+*.key
+.cursor/mcp.json
+
+# Next.js agent rules (regenerated locally by next dev)
+AGENTS.md
+CLAUDE.md
