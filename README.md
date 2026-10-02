@@ -2,6 +2,8 @@
 
 Multi-cloud cost visibility: ingest FOCUS-aligned billing data, roll up daily spend, and drive allocation and budget alerts.
 
+**Repository:** https://github.com/rtrentinavx/cloud-sniffer
+
 **Phase 1b:** Next.js app on Vercel, Neon Postgres cost lake, daily **Vercel billing ingest** via cron.
 
 ## Stack
