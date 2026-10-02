@@ -65,3 +65,5 @@ drizzle/meta/_journal.json.bak
 # Next.js agent rules (regenerated locally by next dev)
 AGENTS.md
 CLAUDE.md
+.vercel
+.env*
