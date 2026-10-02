@@ -16,17 +16,12 @@ export DATABASE_URL='postgresql://USER:PASSWORD@HOST/neondb?sslmode=require'
 psql "$DATABASE_URL" -f db/schema.sql
 ```
 
-Use a connection string from the Neon dashboard. Do not commit real credentials; copy values into `.env.local` locally (see [`.env.example`](../.env.example)).
+Use a connection string from the Neon dashboard; copy into `.env.local` (see [`.env.example`](../.env.example)).
 
 ## Vercel connection strings
 
 - Use Neon’s **pooled** connection string (often includes `-pooler` in the host) for serverless/Vercel deployments to avoid exhausting connections.
 - Use the **direct** string only for migrations or one-off admin tasks if your tooling requires it.
-
-## Security
-
-- Keep `DATABASE_URL` in `.env` / `.env.local` only (both are gitignored).
-- If a database URL or password was exposed in chat, logs, or a commit, **rotate credentials in Neon** and update Vercel env vars before deploying.
 
 ## Tables
 

@@ -58,7 +58,7 @@ npm run seed:demo
 | `REQUIRED_TAG_KEYS` | No | e.g. `team,env,project` — all must exist on tags for `allocated` |
 | `UPSTASH_*` | Later | Redis for dedup / alerts |
 
-Never commit `.env.local` or real secrets.
+Lab: keep secrets in `.env.local` (gitignored) and Vercel env—see [`docs/lab-next-steps.md`](docs/lab-next-steps.md).
 
 ## Grafana Cloud
 

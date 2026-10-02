@@ -1,5 +1,7 @@
 # Grafana Cloud setup (Neon Postgres)
 
+**Lab:** use simple passwords and tokens; no rotation checklist required.
+
 Wire [Grafana Cloud](https://grafana.com/products/cloud/) to the same Neon cost lake as the Next.js app. Grafana complements the Vercel UI for dashboards, FinOps alerting, and Slack notifications.
 
 **Repo artifacts**
@@ -16,7 +18,7 @@ Wire [Grafana Cloud](https://grafana.com/products/cloud/) to the same Neon cost 
 
 1. Sign in at [grafana.com](https://grafana.com/) → **My Account** → **My stacks** (or start a free Cloud trial).
 2. Open your stack → note the **stack URL** (e.g. `https://YOURORG.grafana.net`).
-3. Optional for later automation: **Administration** → **Users and access** → **Service accounts** → create a token with **Editor** (store in a secret manager; see [`.env.example`](../.env.example)).
+3. Optional for automation: **Administration** → **Service accounts** → token with **Editor** → add to `.env.local` / Vercel (see [`.env.example`](../.env.example)).
 
 Set the stack timezone to **UTC** for daily cost rules (Alerting → Notification policies / rule groups).
 
@@ -120,7 +122,7 @@ Not required for manual datasource + import. For scripts or future Terraform/gra
 | `GRAFANA_CLOUD_SERVICE_ACCOUNT_TOKEN` | Service account token with Editor |
 | `GRAFANA_CLOUD_DATASOURCE_UID` | PostgreSQL datasource UID after creation |
 
-See commented entries in [`.env.example`](../.env.example). Never commit tokens.
+See commented entries in [`.env.example`](../.env.example).
 
 ---
 
