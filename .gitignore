@@ -1,63 +1,41 @@
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Environment & secrets (never commit)
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.*.local
-!.env.example
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# Next.js / Vercel
-.next/
-.vercel/
-out/
-build/
-dist/
+# testing
+/coverage
 
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
+# next.js
+/.next/
+/out/
 
-# Testing & coverage
-coverage/
-.nyc_output/
-playwright-report/
-test-results/
-blob-report/
+# production
+/build
 
-# Logs & debug
-logs/
-*.log
+# misc
+.DS_Store
+*.pem
+
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
+.pnpm-debug.log*
 
-# OS & editors
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
-.idea/
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json.example
+# env files (can opt-in for committing if needed)
+.env*
 
-# Turbo / tooling caches
-.turbo/
-.cache/
-.parcel-cache/
-.eslintcache
+# vercel
+.vercel
 
-# Drizzle / Prisma local artifacts (if added later)
-drizzle/meta/_journal.json.bak
-
-# Misc
-*.pem
-*.key
-.cursor/mcp.json
+# typescript
+*.tsbuildinfo
+next-env.d.ts

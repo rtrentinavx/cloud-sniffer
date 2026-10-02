@@ -37,3 +37,19 @@ Use a connection string from the Neon dashboard. Do not commit real credentials;
 | `budgets` | Named monthly limits with JSON `scope` (team, account, tags, etc.) |
 
 Logical model details: Project docs → Option B implementation plan (`cost_line_items`, `cost_daily_rollup`).
+
+## Daily rollup refresh
+
+After line items change, refresh `cost_daily_rollup` for the affected date range.
+
+**From the app (used by Vercel ingest cron):** `refreshCostDailyRollup(fromDate, toDate)` in `lib/db.ts` — deletes rollup rows in `[from, to)` then re-aggregates from `cost_line_items` grouped by day, provider, account, service, region, and currency.
+
+**Standalone SQL:** [`refresh_rollup.sql`](./refresh_rollup.sql) — same logic for ops / `psql`. Defaults to the last 30 UTC days when `from_date` / `to_date` psql variables are empty:
+
+```bash
+psql "$DATABASE_URL" -f db/refresh_rollup.sql
+# Or explicit range (inclusive from, exclusive to):
+psql "$DATABASE_URL" -v from_date="'2026-01-01'" -v to_date="'2026-02-01'" -f db/refresh_rollup.sql
+```
+
+Note: the TypeScript path uses parameterized dates; prefer it from application code on Vercel.
